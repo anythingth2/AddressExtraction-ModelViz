@@ -188,9 +188,12 @@ def parse_and_visualize(text, selected_entities, highlighted_words, is_initial=F
     return result_df
 
 
-def shuffle_text(text):
+def shuffle_text(text, seed: int = 7):
     words = text.split()
-    random.shuffle(words)
+    # print('words', words)
+    # random.shuffle(words)
+    np.random.RandomState(seed).shuffle(words)
+    # print('shuffled words', words)
     return ' '.join(words)
 
 def create_dataframe_result(data):
@@ -255,7 +258,7 @@ if 'is_analyzed' in st.session_state and st.session_state.is_analyzed:
             st.markdown('')
             if st.button("Shuffle Text"):
                 #st.write("Shuffled Texts:")
-                st.session_state.shuffled_texts = [shuffle_text(text) for _ in range(N_SHUFFLE)]
+                st.session_state.shuffled_texts = [shuffle_text(text, seed=None) for i in range(N_SHUFFLE)]
                 #for shuffled_text in st.session_state.shuffled_texts:
                     #st.text(shuffled_text)
                     #st.write('----------------------------------------')
@@ -307,7 +310,7 @@ if 'is_analyzed' in st.session_state and st.session_state.is_analyzed:
 
         all_results = []
         for shuffle_id in range(N_SHUFFLE_SUMMARY):
-            shuffled_text = shuffle_text(text)
+            shuffled_text = shuffle_text(text, seed=shuffle_id)
             tokens, predictions = parse(shuffled_text)
             result_df = make_result_df(tokens, predictions)
             all_results.append(result_df.assign(shuffle_id=shuffle_id))
@@ -323,14 +326,14 @@ if 'is_analyzed' in st.session_state and st.session_state.is_analyzed:
         # st.write(selected_word)
 
         all_result_df = pd.concat(all_results)
-        all_result_df['order'] = (all_result_df['index'] + 1).astype(str)
+        all_result_df['order'] = 'Index: ' + (all_result_df['index'] + 1).astype(str)
 
         word_result_df = all_result_df[all_result_df['token'] == selected_word]
 
-        df = word_result_df.groupby(['order', 'tag']).agg(count=('token', 'count')).reset_index()
+        df = word_result_df.groupby(['index', 'order', 'tag']).agg(count=('token', 'count')).reset_index()
         df['count_all_word'] = df.groupby('order')['count'].transform('sum')
         df['percentage'] = df['count'] / df['count_all_word'] * 100
-        df.sort_values(['order', 'tag'])
+        df.sort_values(['index', 'tag'])
 
         # st.write(all_result_df)
         # st.write(df)
@@ -343,7 +346,13 @@ if 'is_analyzed' in st.session_state and st.session_state.is_analyzed:
             barmode='stack',
             text='tag',
             color_discrete_map=TAG_COLORS,
-            category_orders={'tag': ['ADDR', 'LOC', 'POST', 'O']}
+            category_orders={'tag': ['ADDR', 'LOC', 'POST', 'O']},
+            
+        )
+        fig.update_layout(
+            font=dict(size=20),
+            yaxis=dict(title='Probability (%)'),
+            xaxis=dict(title='Shuffled Order'),
         )
 
         st.markdown(f'# What if "{selected_word}" is shuffled ?')
