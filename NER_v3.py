@@ -340,6 +340,9 @@ O : Other
 
     with summary_tab:
         original_tokens, original_predictions = parse(text)
+        original_result_df = make_result_df(original_tokens, original_predictions)
+        original_result_df['order'] = 'Index: ' + (original_result_df['index'] + 1).astype(str)
+        original_result_df.sort_values('index', inplace=True)
 
         all_results = []
         for shuffle_id in range(N_SHUFFLE_SUMMARY):
@@ -379,7 +382,10 @@ O : Other
             barmode='stack',
             text='tag',
             color_discrete_map=TAG_COLORS,
-            category_orders={'tag': ['ADDR', 'LOC', 'POST', 'O']},
+            category_orders={
+                'tag': ['ADDR', 'LOC', 'POST', 'O'],
+                'order': original_result_df['order']
+            },
             
         )
         fig.update_layout(
