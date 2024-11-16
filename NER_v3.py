@@ -60,9 +60,9 @@ TAG_COLORS = {
 
 
 TAG_COLORS_VERSION_DEAR = {
-    "O": "#FFC0CB",
-    "ADDR": "#ADD8E6",
-    "LOC": "#fdffb6",
+    "O": "#FFC0CB", 
+    "ADDR": "#F7E8A4",
+    "LOC": "#ADD8E6",
     "POST": "#9ce7d5"
 }
 
@@ -106,12 +106,6 @@ def create_token_version_pson(token: str, entity_label: str = None):
     
 def create_token_tag_version_dear(token: str, entity_label: str = None) -> str:
     # Define colors for each label and highlighted words
-    TAG_COLORS_VERSION_DEAR = {
-        "O": "#FFC0CB",
-        "ADDR": "#ADD8E6",
-        "LOC": "#fdffb6",
-        "POST": "#9ce7d5"
-    }
     highlight_color = "#FFD700"  # Gold for highlighted words
 
     color = TAG_COLORS_VERSION_DEAR.get(entity_label, "#ffffff")
