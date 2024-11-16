@@ -14,7 +14,7 @@ model = joblib.load('model/model.joblib')
 
 stopwords = ["ผู้", "ที่", "ซึ่ง", "อัน"]
 
-N_SHUFFLE = 10
+N_SHUFFLE = 5
 N_SHUFFLE_SUMMARY = 100
 
 
@@ -214,6 +214,8 @@ with submit_button:
     if st.button("Analyze !"):
     # if text:
         st.session_state.is_analyzed = True
+        st.session_state.show_word_selection = False   
+        st.session_state.shuffled_texts = []
 
 # Session state initialization
 if 'initial_result' not in st.session_state:
@@ -243,7 +245,26 @@ if 'is_analyzed' in st.session_state and st.session_state.is_analyzed:
                 'Named Entities',
                 options=["ADDR", "LOC", "POST", "O"],
                 default=["ADDR", "LOC", "POST", "O"],
+    #             help='''
+    # ADDR : Address
+
+    # LOC : Location
+
+    # POST : Postal Code
+
+    # O : Others
+    #             ''',
+                help='''
+LOC : Sub-district, District, or Provinct
+
+POST : Postal Code
+
+ADDR : Other address element
+
+O : Other
+                ''',
                 selection_mode='multi'
+
             )
         if text:
             st.markdown("## Original Prediction:")
@@ -256,7 +277,9 @@ if 'is_analyzed' in st.session_state and st.session_state.is_analyzed:
         # Shuffle button and functionality
         if 'ner_done' in st.session_state and st.session_state.ner_done:
             st.markdown('')
-            if st.button("Shuffle Text"):
+            shuffled = st.button("Shuffle Text")
+
+            if shuffled:
                 #st.write("Shuffled Texts:")
                 st.session_state.shuffled_texts = [shuffle_text(text, seed=None) for i in range(N_SHUFFLE)]
                 #for shuffled_text in st.session_state.shuffled_texts:
@@ -268,7 +291,8 @@ if 'is_analyzed' in st.session_state and st.session_state.is_analyzed:
 
 
         
-            if hasattr(st.session_state, 'show_word_selection'):
+            if hasattr(st.session_state, 'show_word_selection') and st.session_state.show_word_selection:
+            # if hasattr(st.session_state, 'is_shuffled') and st.session_state.is_shuffled:
 
 
                 with what_if_tab:
@@ -282,16 +306,25 @@ if 'is_analyzed' in st.session_state and st.session_state.is_analyzed:
                     # )
 
                     with token_selector_section:
+                        # highlighted_words = st.pills(
+                        #     'Choose Words to Highlight',
+                        #     options=original_words,
+                        #     default=[],
+                        #     selection_mode='multi'
+                        # )
+                        pass
+                    # highlighted_words = highlighted_words or list()
+                
+                    # if highlighted_words or True:  # แสดงทุกครั้งแม้ยังไม่มีการเลือกคำ
+                    if True:
+                        
+                        st.markdown("## Shuffle !")
                         highlighted_words = st.pills(
                             'Choose Words to Highlight',
                             options=original_words,
                             default=[],
                             selection_mode='multi'
                         )
-                    highlighted_words = highlighted_words or list()
-                
-                    if highlighted_words or True:  # แสดงทุกครั้งแม้ยังไม่มีการเลือกคำ
-                        st.markdown("## Shuffle !")
                         print('selected_entities', selected_entities)
                         print('highlighted_words', highlighted_words)
                         for shuffle_id, shuffled_text in enumerate(st.session_state.shuffled_texts):
