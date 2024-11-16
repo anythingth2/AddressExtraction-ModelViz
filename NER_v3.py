@@ -121,14 +121,14 @@ def create_token_tag_version_dear(token: str, entity_label: str = None) -> str:
 
     if entity_label is None:
         html_output += f'<div style="width: 100%; display: inline-block; margin: 0 5px; text-align: center; border: 1px solid {color}; background-color: {NO_TAG_COLOR}; padding: 5px; border-radius: 5px;">'
-        html_output += f'<div style="color: black; padding: 2px 5px; margin-top: 2px; border-radius: 3px;">{token}</div>'
+        html_output += f'<div style="color: black; padding: 2px 5px; margin-top: 2px; border-radius: 3px; text-overflow: ellipsis;">{token}</div>'
         # html_output += f'<div style="display: inline-block; margin: 0 5px; text-align: center; padding: 5px;">'
         # html_output += f'<div>{token}</div>'
         html_output += '</div>'
     else:
         html_output += f'<div style="width: 100%; display: inline-block; margin: 0 5px; text-align: center; border: 1px solid {color}; background-color: {color}; padding: 5px; border-radius: 5px;">'
-        html_output += f'<div style="color: black; padding: 2px 5px; margin-top: 2px; border-radius: 3px;">{token}</div>'
-        html_output += f'<div style="background-color: white; color: #6D6875; padding: 2px 5px; margin-top: 2px; border-radius: 3px; font-weight: bold;">{entity_label}</div>'
+        html_output += f'<div style="color: black; padding: 2px 5px; margin-top: 2px; border-radius: 3px; text-overflow: ellipsis;">{token}</div>'
+        html_output += f'<div style="background-color: white; color: #6D6875; padding: 2px 5px; margin-top: 2px; border-radius: 3px; font-weight: bold; text-overflow: ellipsis;">{entity_label}</div>'
         html_output += '</div>'
     
     html_output += '</div>'
