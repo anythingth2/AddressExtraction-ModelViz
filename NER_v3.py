@@ -325,8 +325,7 @@ O : Other
                             default=[],
                             selection_mode='multi'
                         )
-                        print('selected_entities', selected_entities)
-                        print('highlighted_words', highlighted_words)
+
                         for shuffle_id, shuffled_text in enumerate(st.session_state.shuffled_texts):
                             result_df = parse_and_visualize(shuffled_text, selected_entities, highlighted_words,is_initial=False)
                             
@@ -381,7 +380,7 @@ O : Other
             color='tag',
             barmode='stack',
             text='tag',
-            color_discrete_map=TAG_COLORS,
+            color_discrete_map=TAG_COLORS_VERSION_DEAR,
             category_orders={
                 'tag': ['ADDR', 'LOC', 'POST', 'O'],
                 'order': original_result_df['order']
