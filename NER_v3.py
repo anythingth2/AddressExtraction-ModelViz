@@ -202,7 +202,7 @@ st.title("[What if analysis] - If the address is SHUFFLED !")
 text_input_section, submit_button = st.columns(spec=[0.8, 0.2], vertical_alignment='bottom')
 with text_input_section:
     # Input text
-    text = st.text_input("Text Input:", value=None)
+    text = st.text_input("Text Input:", value='นายสมชาย เข็มกลัด 254 ถนน พญาไท แขวง วังใหม่ เขต ปทุมวัน กรุงเทพ 10330')
 with submit_button:
     # Analyze
     if st.button("Analyze !"):
