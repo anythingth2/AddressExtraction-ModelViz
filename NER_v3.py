@@ -63,7 +63,7 @@ TAG_COLORS_VERSION_DEAR = {
     "O": "#FFC0CB", 
     "ADDR": "#F7E8A4",
     "LOC": "#ADD8E6",
-    "POST": "#9ce7d5"
+    "POST": "#4DC9B0"
 }
 
 NO_TAG_COLOR = '#f0f0f0'
